@@ -11,10 +11,13 @@ Then, to install dependencies, run the command
 ```
 pip install -r requirements.txt
 ```
+Additionally, configure your API Key in 
+```
+backend/process_product_img.py
+```
 ## Usage
 To start VisLink, run this command in the project directory:
 ```
 python MainWindow.py
 ```
-
 After a few seconds, a window like the following should appear:
