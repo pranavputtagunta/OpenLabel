@@ -2,51 +2,39 @@
     "is_appropriate": "Maybe",
     "rating": 6,
     "category": "food",
-    "product_name": "Awake Caffeinated Chocolate Bar",
-    "image_url": "https://i.ytimg.com/vi/s_35j14X33I/maxresdefault.jpg",
+    "product_name": "Cookie",
+    "image_url": "https://i.imgur.com/absb56k.jpg",
     "bounding_box": {
-        "ymin": 493,
-        "xmin": 393,
-        "ymax": 575,
-        "xmax": 586
+        "ymin": 393,
+        "xmin": 384,
+        "ymax": 641,
+        "xmax": 573
     },
-    "feedback": "This caffeinated chocolate bar might not be the best choice for someone trying to reduce weight due to its high sugar and calorie content. However, it doesn't contain peanuts, so it's safe in that regard. It can be consumed in moderation.",
+    "feedback": "The cookie is vegetarian-friendly and can be considered a cheat meal, aligning with your goal of gaining weight and having a cheat meal once a week. However, it's high in sugar and fat, which should be consumed in moderation. It does not contain pecans or walnuts.",
     "nutrition_info": {
-        "calories": "220",
-        "protein": "3g",
-        "carbohydrates": "26g",
-        "fat": "12g",
-        "sugar": "17g",
-        "fiber": "2g"
+        "calories": "Approximately 300-400",
+        "protein": "Approximately 3-5g",
+        "carbohydrates": "Approximately 40-50g",
+        "fat": "Approximately 15-20g",
+        "sugar": "Approximately 25-30g",
+        "fiber": "Approximately 1-2g"
     },
-    "price": "$2.50",
+    "price": "Unknown",
     "alternative_products": [
         {
-            "product_name": "Atkins Endulge Treat Chocolate Caramel Bar",
-            "image_url": "https://m.media-amazon.com/images/I/51Vw-jCAZ5L._SX342_.jpg",
-            "product_link": "https://www.amazon.com/s?k=Atkins+Endulge+Treat+Chocolate+Caramel+Bar"
+            "product_name": "Protein Cookie",
+            "image_url": "N/A",
+            "product_link": "amazon.com/s?k=protein+cookie"
         }
     ],
     "ingredients": [
         {
-            "ingredient_name": "Maltitol",
-            "description": "A sugar alcohol used as a sugar substitute. It has fewer calories than sugar but can still affect blood sugar levels and may cause digestive issues in some people."
+            "ingredient_name": "Artificial Colors",
+            "description": "Artificial colors are used to enhance the visual appeal of the cookie. While generally considered safe in small amounts, some studies have linked them to hyperactivity in children. For a vegetarian aiming to gain muscle, these additives offer no nutritional benefit and could be avoided."
         },
         {
-            "ingredient_name": "Cocoa Butter",
-            "description": "The fat component of the cocoa bean. It is high in saturated fat, which should be consumed in moderation as part of a weight-loss plan."
-        },
-        {
-            "ingredient_name": "Soy Lecithin",
-            "description": "An emulsifier derived from soybeans. It's generally considered safe but can be a concern for individuals with soy allergies."
-        },
-        {
-            "ingredient_name": "Caffeine",
-            "description": "A stimulant that can increase alertness and energy. However, excessive caffeine intake can lead to anxiety, insomnia, and other side effects. It can also increase heart rate and blood pressure."
-        },
-        {
-            "ingredient_name": "Polyglycerol Polyricinoleate",
-            "description": "An emulsifier used to reduce the viscosity of chocolate. It is considered safe for consumption in small amounts."
+            "ingredient_name": "High Fructose Corn Syrup",
+            "description": "High fructose corn syrup is a sweetener derived from corn starch. It's cheaper than sugar and is used to sweeten many processed foods. It has been linked to weight gain, insulin resistance, and other health problems. For a vegetarian aiming to gain muscle, high fructose corn syrup can contribute to unhealthy weight gain and should be consumed in moderation."
         }
     ]
 }
