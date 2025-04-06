@@ -1,8 +1,18 @@
 # OpenLabel Guide
 ![Logo](/assets/logo.jpg)
 ## Project Story
+**According to food allergy research and education, 3.4 million patients have food allergy related emergency room visits**
 
+Most food products found in your average grocery store are not explicitly labeled and more often than not, the nutrition and ingredient labels on them are difficult to interpret for the average consumer. 
+
+Furthermore, some food products that are marketed as _healthy products_ may contain potential harmful chemicals and allergens that can lead to drastic and unexpected outcomes.
+
+We wanted to help people understand **exactly** what they are putting into their bodies in the context of their own health - not what the flashy packaging tends to lead you to believe.
+
+**We believe everyone deserves honest food.**
 ## Overview
+![devpost](https://devpost.com/software/openlabel)
+## Installation
 To start, clone the git repository
 ```
 git clone https://github.com/pranavputtagunta/OpenLabel.git
