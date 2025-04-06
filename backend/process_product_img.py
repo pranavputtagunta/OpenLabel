@@ -151,13 +151,13 @@ class FoodRecommender:
         if self.response is None:
             raise Exception("No response available. Please process an image first.")
         # Draw bounding boxes on the image
-        for box in self.response['bounding_box']:
-            ymin, xmin, ymax, xmax = box['ymin'], box['xmin'], box['ymax'], box['xmax']
-            ymin = int(image.shape[0] * ymin / 1000)
-            xmin = int(image.shape[1] * xmin / 1000)
-            ymax = int(image.shape[0] * ymax / 1000)
-            xmax = int(image.shape[1] * xmax / 1000)
-            cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
+        box = self.response['bounding_box']
+        ymin, xmin, ymax, xmax = box['ymin'], box['xmin'], box['ymax'], box['xmax']
+        ymin = int(image.shape[0] * ymin / 1000)
+        xmin = int(image.shape[1] * xmin / 1000)
+        ymax = int(image.shape[0] * ymax / 1000)
+        xmax = int(image.shape[1] * xmax / 1000)
+        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
         return image
 
 def get_user_preferences(json_file_path: str) -> UserPreferences:
