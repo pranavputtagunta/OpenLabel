@@ -1,6 +1,6 @@
 import cv2
 import PIL
-import process_product_img as processor
+import backend.process_product_img as processor
 
 food_recommender = processor.FoodRecommender('user_preferences.json')
 

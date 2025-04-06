@@ -2,7 +2,9 @@ import google.generativeai as genai
 import os
 import json
 import PIL.Image as Image
+import numpy as np
 from PIL import ImageFile
+import cv2
 
 # Set your API key here
 
@@ -127,6 +129,15 @@ class FoodRecommender:
         self.response = json.loads(response.text[response.text.index("{"):response.text.rindex("}")+1])
         return self.response
     
+    def process_product_image_cv2(self, image: np.ndarray) -> dict:
+        # Convert the image to a PIL Image
+        image = Image.fromarray(image)
+        # Call the API to process the product image
+        response = self.model.generate_content(contents=[json.dumps(self.user_preferences.to_dict()), image])
+        # Parse the response and return it as a dictionary
+        self.response = json.loads(response.text[response.text.index("{"):response.text.rindex("}")+1])
+        return self.response
+    
     def create_response_json(self, file_path: str = "response.json"):
         # Check if the response is available
         if self.response is None:
@@ -134,6 +145,20 @@ class FoodRecommender:
         # Create a JSON file with the response
         with open(file_path, 'w') as file:
             json.dump(self.response, file, indent=4)
+
+    def draw_bounding_boxes(self, image: np.ndarray) -> np.ndarray:
+        # Check if the response is available
+        if self.response is None:
+            raise Exception("No response available. Please process an image first.")
+        # Draw bounding boxes on the image
+        for box in self.response['bounding_box']:
+            ymin, xmin, ymax, xmax = box['ymin'], box['xmin'], box['ymax'], box['xmax']
+            ymin = int(image.shape[0] * ymin / 1000)
+            xmin = int(image.shape[1] * xmin / 1000)
+            ymax = int(image.shape[0] * ymax / 1000)
+            xmax = int(image.shape[1] * xmax / 1000)
+            cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
+        return image
 
 def get_user_preferences(json_file_path: str) -> UserPreferences:
     with open(json_file_path, 'r') as file:
