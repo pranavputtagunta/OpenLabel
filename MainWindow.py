@@ -163,7 +163,7 @@ class MainWindow(customtkinter.CTk):
         
         # Image Processing State Variables
         self.analyzed = False
-        self.frame = None
+        self.paused_frame = None
         self.pause_webcam = False
         self.food_recommender = processor.FoodRecommender(USER_PROFILE_FILE)
 
@@ -318,14 +318,14 @@ class MainWindow(customtkinter.CTk):
                 self.toggle_button.configure(text="Hide Description")
                 pywinstyles.set_opacity(self.toggle_button, color="#000001")
             self.description_visible = not self.description_visible
-        elif self.frame != None:
+        else:
             # If the image hasn't been analyzed yet, process it
             self.toggle_button.configure(text="Analyzing image...")
             self.toggle_button.configure(state="disabled")
             self.pause_webcam = True
-            self.food_recommender.process_product_image_cv2(self.frame)
+            self.food_recommender.process_product_image_cv2(self.pause_frame)
             self.food_recommender.create_response_json()
-            self.frame = self.food_recommender.draw_bounding_boxes(self.frame)
+            self.pause_frame = self.food_recommender.draw_bounding_boxes(self.frame)
             self.analyzed = True
             self.toggle_button.configure(state="normal")
             self.toggle_description()
@@ -581,10 +581,10 @@ class MainWindow(customtkinter.CTk):
         ret, frame = self.cap.read()
 
         if ret:
-            if self.frame != None and self.pause_webcam:
-                frame = self.frame
+            if self.pause_webcam:
+                frame = self.pause_frame
             else:
-                self.frame = frame
+                self.pause_frame = frame
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
             # Get target dimensions (subtracting margins as needed)
