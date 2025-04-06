@@ -326,9 +326,9 @@ class MainWindow(customtkinter.CTk):
             self.toggle_button.configure(text="Analyzing image...")
             self.toggle_button.configure(state="disabled")
             self.pause_webcam = True
-            self.food_recommender.process_product_image_cv2(self.pause_frame)
+            self.food_recommender.process_product_image_cv2(self.paused_frame)
             self.food_recommender.create_response_json()
-            self.pause_frame = self.food_recommender.draw_bounding_boxes(self.frame)
+            self.paused_frame = self.food_recommender.draw_bounding_boxes(self.paused_frame)
             self.analyzed = True
             self.toggle_button.configure(state="normal")
             self.toggle_description()
@@ -589,9 +589,9 @@ class MainWindow(customtkinter.CTk):
 
         if ret:
             if self.pause_webcam:
-                frame = self.pause_frame
+                frame = self.paused_frame
             else:
-                self.pause_frame = frame
+                self.paused_frame = frame
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
             # Get target dimensions (subtracting margins as needed)
