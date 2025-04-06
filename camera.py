@@ -19,24 +19,32 @@ while True:
     key = cv2.waitKey(1) & 0xFF
 
     if key == ord('s'):  # Press 's' to stop and process the frame
-        cv2.destroyWindow('Camera Feed')
 
         # Convert the frame to PIL Image
         image = PIL.Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 
         response = food_recommender.process_product_image(image)
-        food_recommender.create_response_json()
         print("Response from Food Recommender:", response)
 
-        # Draw a circle marker on the frame
-        frame = cv2.circle(frame, (int(frame.shape[1] * response['center_coordinates']['x']), int(frame.shape[0] * response['center_coordinates']['y'])), 20, (0, 255, 0), -1)
+        # Draw a bounding box around the detected object (optional)
+        if response['product_name'] == "error":
+            print("Error in processing the image.")
+            continue
+
+        food_recommender.create_response_json()
+
+        x_min = int(frame.shape[1] * response['bounding_box']['xmin'] / 1000)
+        y_min = int(frame.shape[0] * response['bounding_box']['ymin'] / 1000)
+        x_max = int(frame.shape[1] * response['bounding_box']['xmax'] / 1000)
+        y_max = int(frame.shape[0] * response['bounding_box']['ymax'] / 1000)
+        cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
 
         # Display the frame
-        cv2.imshow('Captured Frame', frame)
+        cv2.imshow('Camera Feed', frame)
         cv2.waitKey(0)  # Wait indefinitely until another key is pressed
 
     elif key == ord('c'):  # Press 'c' to continue the loop
-        cv2.destroyWindow('Captured Frame')
+        pass
 
     # Display the image (optional)
     cv2.imshow('Camera Feed', frame)
