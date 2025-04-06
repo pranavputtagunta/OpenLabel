@@ -37,7 +37,7 @@ class OpenLabelApp(ctk.CTk):
         self.progress_label.configure(text=f"{percentage}%")
 
     def load_user_profile(self):
-        filename = "user_profile.json"
+        filename = "./backend/user_profile.json"
         try:
             with open(filename, "r") as f:
                 return json.load(f)
@@ -273,7 +273,7 @@ class OpenLabelApp(ctk.CTk):
     def save_user_data(self, user_data):
         """Saves user data to a JSON file in the specified format."""
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        filename = os.path.join(script_dir, "user_profile.json")
+        filename = os.path.join(script_dir, "./backend/user_profile.json")
         print(f"Debug: Script directory: {script_dir}")
         print(f"Debug: Full filename to save: {filename}")
         try:

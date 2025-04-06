@@ -9,6 +9,9 @@ import os
 
 from welcome import OpenLabelApp
 from loading import LoadingScreen
+
+from alternatives import AlternativesWindow
+from ingredients import IngredientsWindow
 import backend.process_product_img as processor
 
 import time
@@ -547,10 +550,14 @@ class MainWindow(customtkinter.CTk):
             self.toggle_button.place_configure(rely=0.95)
 
     def show_alternatives(self):
-        pass
+        self.show_alternatives_requested = True
+        self.grab_release()
+        self.destroy()
 
     def show_ingredients(self):
-        pass
+        self.show_ingredients_requested = True
+        self.grab_release()
+        self.destroy()
 
     def create_rounded_frame(self, image, corner_radius):
         mask = Image.new('L', image.size, 0)
@@ -625,7 +632,7 @@ class MainWindow(customtkinter.CTk):
         self.destroy()
 
 
-def fade_window(window, start_alpha=1.0, end_alpha=0.0, step=0.01, delay=5):
+def fade_window(window, start_alpha=1.0, end_alpha=0.0, step=0.05, delay=1):
     """Helper function to fade a window in or out"""
     def _fade_step(current_alpha):
         if start_alpha > end_alpha:  # Fading out
@@ -652,18 +659,39 @@ def mainTest():
     app = OpenLabelApp()
     app.after(0, lambda: app.grab_set())
     app.after(0, lambda: fade_window(app, 0.0, 1.0))
+    current_window = "welcome"
     app.mainloop()
 
     while True:
-        main_app = MainWindow()
-        main_app.after(0, lambda:main_app.grab_set())
-        main_app.after(0, lambda: fade_window(main_app, 0.0, 1.0))  # Fade in the main window
-        main_app.mainloop()
+        if current_window in ["welcome", "settings", "alternatives", "ingredients"]:
+            main_app = MainWindow()
+            main_app.after(0, lambda:main_app.grab_set())
+            main_app.after(0, lambda: fade_window(main_app, 0.0, 1.0))  # Fade in the main window
+            current_window = "main"
+            main_app.mainloop()
 
-        settings = SettingsWindow()
-        settings.after(0, lambda:settings.grab_set())
-        settings.after(0, lambda: fade_window(settings, 0.0, 1.0))
-        settings.mainloop()
+        if hasattr(main_app, 'show_alternatives_requested') and main_app.show_alternatives_requested:
+            alternatives = AlternativesWindow()
+            alternatives.after(0, lambda: alternatives.grab_set())
+            alternatives.after(0, lambda: fade_window(alternatives, 0.0, 1.0))
+            current_window = "alternatives"
+            main_app.show_alternatives_requested = False
+            alternatives.mainloop()
+        elif hasattr(main_app, 'show_ingredients_requested') and main_app.show_ingredients_requested:
+            ingredients = IngredientsWindow()
+            ingredients.after(0, lambda: ingredients.grab_set())
+            ingredients.after(0, lambda: fade_window(ingredients, 0.0, 1.0))
+            current_window = "ingredients"
+            main_app.show_ingredients_requested = False
+            ingredients.mainloop()
+        elif current_window == "main":
+            settings = SettingsWindow()
+            settings.after(0, lambda:settings.grab_set())
+            settings.after(0, lambda: fade_window(settings, 0.0, 1.0))
+            current_window = "settings"
+            settings.mainloop()
+        
+
 
 
 
