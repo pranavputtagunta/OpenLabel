@@ -8,7 +8,7 @@ import cv2
 
 # Set your API key here
 
-genai.configure(api_key="KEY_GOES_HERE")
+genai.configure(api_key="API_KEY_HERE")
 
 default_system_insructions = """
 You are a helpful assistant that determines whether a product image is appropriate for a specific user based on their preferences.
@@ -16,7 +16,7 @@ You will receive a product image and user preferences, including dietary restric
 Please output only a JSON with the following fields and no other response. Don't include extra brackets, special characters, or any other text. Start and end with curly braces. The JSON should be formatted as follows:
 
 - "is_appropriate": A yes, no, or maybe indicating whether the product is appropriate for the user based on their preferences.
-- "rating": An integer rating from 1 to 10, where 1 is not recommended at all and 10 is recommended. 1-4 is not appropriate, 5-7 is somewhat appropriate, and 8-10 is very appropriate.
+- "rating": An integer rating from 1 to 10, where 1 is not recommended at all and 10 is recommended. 1-4 is not appropriate, 5-7 is somewhat appropriate, and 8-10 is very appropriate. Take into account users preferences holistically
 - "category": The category of the product (e.g., food, beverage, supplement).
 - "product_name": The name of the product in the image. Respond with "error" if no object is detected in the image.
 - "image_url": The URL of the product image from the web.
@@ -31,12 +31,12 @@ Please output only a JSON with the following fields and no other response. Don't
     "fiber": string providing the fiber content of the product,
 - "price": string providing the price of the product in the image
 - "alternative_products": list of similar products that are more appropriate for the user if the product is not appropriate. Make the alternatives either diet versions of it or snacks that are very similar but healthier. None if it is appropriate. Also include a url to buy the item (in the exact format of amazon.com/s?k=[alternative_name]).
-- "ingredients": list of ingredients in the product.
+- "ingredients": list of all of the ingredients in the product especially the ones that an average person wouldn't know (e.g concentrates, chemicals, acids, syrups, dye, etc.). EXPLAIN THE HEALTH EFFECTS IN THE CONTEXT OF THE USER'S PREFERENCES
     "ingredient_name": string providing the name of the ingredient,
     "description": string providing a description of the ingredient and health impacts,
 
 {
-  "is_appropriate": "Yes" or "No" or "maybe",
+  "is_appropriate": "Yes" or "No" or "Maybe",
   "rating": int,
   "category": "string",
   "product_name": "string",
@@ -158,8 +158,29 @@ class FoodRecommender:
         xmin = int(image.shape[1] * xmin / 1000)
         ymax = int(image.shape[0] * ymax / 1000)
         xmax = int(image.shape[1] * xmax / 1000)
-        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
+        recommendation = self.response['is_appropriate'].lower()
+        color = (0, 0, 255)
+        if "yes" in recommendation:
+            color = (0, 255, 0)
+        elif "maybe" in recommendation:
+            color = (0, 255, 255)
+        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
         return image
+    
+class IngredientExplainer: 
+        def __init__(self, user_pref_json: str, system_instructions=default_system_insructions, safety_settings=default_safety_settings, config=default_config):
+            self.user_preferences = get_user_preferences(user_pref_json)
+            self.response = None
+            self.model = genai.GenerativeModel(
+                model_name= "gemini-2.0-flash",
+                safety_settings=safety_settings,
+                system_instruction="Please explain in simple terms what the queried ingredient is and its health impacts in the context of the user preferences. 1-2 sentences max.",
+                generation_config=config
+            )
+
+        def get_response(self, ingredient):
+            response = self.model.generate_content(contents= [ingredient])
+            return response.text
 
 def get_user_preferences(json_file_path: str) -> UserPreferences:
     with open(json_file_path, 'r') as file:

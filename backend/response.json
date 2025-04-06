@@ -1,97 +1,52 @@
 {
-    "is_appropriate": "No",
-    "rating": 3,
+    "is_appropriate": "Maybe",
+    "rating": 6,
     "category": "food",
-    "product_name": "Goldfish Flavor Blasted Xtra Cheddar",
-    "image_url": "https://i.imgur.com/Ww11QYF.jpg",
+    "product_name": "Awake Caffeinated Chocolate Bar",
+    "image_url": "https://i.ytimg.com/vi/s_35j14X33I/maxresdefault.jpg",
     "bounding_box": {
-        "ymin": 149,
-        "xmin": 467,
-        "ymax": 854,
-        "xmax": 703
+        "ymin": 493,
+        "xmin": 393,
+        "ymax": 575,
+        "xmax": 586
     },
-    "feedback": "Goldfish Flavor Blasted Xtra Cheddar are not ideal for weight reduction due to their high carbohydrate content and processed nature. They offer minimal nutritional value and can contribute to weight gain if consumed regularly.",
+    "feedback": "This caffeinated chocolate bar might not be the best choice for someone trying to reduce weight due to its high sugar and calorie content. However, it doesn't contain peanuts, so it's safe in that regard. It can be consumed in moderation.",
     "nutrition_info": {
-        "calories": "140",
-        "protein": "5g",
-        "carbohydrates": "20g",
-        "fat": "5g",
-        "sugar": "1g",
-        "fiber": "1g"
+        "calories": "220",
+        "protein": "3g",
+        "carbohydrates": "26g",
+        "fat": "12g",
+        "sugar": "17g",
+        "fiber": "2g"
     },
-    "price": "$2.99",
+    "price": "$2.50",
     "alternative_products": [
         {
-            "product_name": "SkinnyPop Original Popcorn",
-            "image_url": "https://m.media-amazon.com/images/I/91z9UDyX+ZL._SL1500_.jpg",
-            "product_link": "https://www.amazon.com/s?k=SkinnyPop+Original+Popcorn"
-        },
-        {
-            "product_name": "Quest Nutrition Cheddar Blast Protein Chips",
-            "image_url": "https://m.media-amazon.com/images/I/813d9n5v92L._SL1500_.jpg",
-            "product_link": "https://www.amazon.com/s?k=Quest+Nutrition+Cheddar+Blast+Protein+Chips"
+            "product_name": "Atkins Endulge Treat Chocolate Caramel Bar",
+            "image_url": "https://m.media-amazon.com/images/I/51Vw-jCAZ5L._SX342_.jpg",
+            "product_link": "https://www.amazon.com/s?k=Atkins+Endulge+Treat+Chocolate+Caramel+Bar"
         }
     ],
     "ingredients": [
         {
-            "ingredient_name": "Enriched Wheat Flour",
-            "description": "Provides carbohydrates but can be heavily processed and lack nutrients."
+            "ingredient_name": "Maltitol",
+            "description": "A sugar alcohol used as a sugar substitute. It has fewer calories than sugar but can still affect blood sugar levels and may cause digestive issues in some people."
         },
         {
-            "ingredient_name": "Vegetable Oils (Canola, Sunflower and/or Soybean)",
-            "description": "Source of fat, but the health impact depends on the specific oil; some may be high in omega-6 fatty acids."
+            "ingredient_name": "Cocoa Butter",
+            "description": "The fat component of the cocoa bean. It is high in saturated fat, which should be consumed in moderation as part of a weight-loss plan."
         },
         {
-            "ingredient_name": "Cheddar Cheese",
-            "description": "Adds flavor and some protein, but also contributes to fat and sodium content."
+            "ingredient_name": "Soy Lecithin",
+            "description": "An emulsifier derived from soybeans. It's generally considered safe but can be a concern for individuals with soy allergies."
         },
         {
-            "ingredient_name": "Salt",
-            "description": "Enhances flavor but can contribute to high sodium intake."
+            "ingredient_name": "Caffeine",
+            "description": "A stimulant that can increase alertness and energy. However, excessive caffeine intake can lead to anxiety, insomnia, and other side effects. It can also increase heart rate and blood pressure."
         },
         {
-            "ingredient_name": "Yeast Extract",
-            "description": "Used as a flavor enhancer."
-        },
-        {
-            "ingredient_name": "Paprika Extract",
-            "description": "Used for color."
-        },
-        {
-            "ingredient_name": "Spices",
-            "description": "Adds flavor."
-        },
-        {
-            "ingredient_name": "Dehydrated Onions",
-            "description": "Adds flavor."
-        },
-        {
-            "ingredient_name": "Autolyzed Yeast Extract",
-            "description": "Flavor enhancer."
-        },
-        {
-            "ingredient_name": "Sugar",
-            "description": "Adds sweetness and calories."
-        },
-        {
-            "ingredient_name": "Monosodium Glutamate",
-            "description": "Flavor enhancer."
-        },
-        {
-            "ingredient_name": "Disodium Inosinate",
-            "description": "Flavor enhancer."
-        },
-        {
-            "ingredient_name": "Disodium Guanylate",
-            "description": "Flavor enhancer."
-        },
-        {
-            "ingredient_name": "Baking Soda",
-            "description": "Leavening agent."
-        },
-        {
-            "ingredient_name": "Annatto Extracts",
-            "description": "Used for color."
+            "ingredient_name": "Polyglycerol Polyricinoleate",
+            "description": "An emulsifier used to reduce the viscosity of chocolate. It is considered safe for consumption in small amounts."
         }
     ]
 }

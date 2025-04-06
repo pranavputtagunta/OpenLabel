@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import json
 from PIL import Image, ImageTk
+import backend.process_product_img as processor
 import os
 
 class IngredientsWindow(ctk.CTk):
@@ -9,7 +10,7 @@ class IngredientsWindow(ctk.CTk):
         
         # Configure window
         self.title("Ingredients Information")
-        self.geometry("800x600")
+        self.geometry("800x800")
         self._set_appearance_mode("light")
         self.configure(fg_color="white")
 
@@ -49,19 +50,114 @@ class IngredientsWindow(ctk.CTk):
         # Load and display ingredients
         self.load_ingredients()
 
-        # Bottom back button
-        self.bottom_back_button = ctk.CTkButton(
+
+        # Create search frame
+        self.search_frame = ctk.CTkFrame(
             self,
-            text="Close Window",
+            fg_color="white",
+            height=120
+        )
+        self.search_frame.pack(fill="x", padx=20, pady=(0, 20))
+
+        # Search label
+        self.search_label = ctk.CTkLabel(
+            self.search_frame,
+            text="See an ingredient that's not on here? Just Ask:",
             font=("Arial Bold", 14),
+            text_color="green"
+        )
+        self.search_label.pack(pady=(10, 5))
+
+        # Create input and button layout frame
+        self.input_frame = ctk.CTkFrame(
+            self.search_frame,
+            fg_color="transparent"
+        )
+        self.input_frame.pack(fill="x", padx=10)
+
+        # Search input
+        self.search_input = ctk.CTkEntry(
+            self.input_frame,
+            placeholder_text="Enter ingredient name...",
+            font=("Arial", 12),
+            height=35,
+            width=500,
+            corner_radius=10,
+            border_color="green",
+            fg_color="white",
+            text_color="black"
+        )
+        self.search_input.pack(side="left", padx=(0, 10))
+
+        # Search button
+        self.search_button = ctk.CTkButton(
+            self.input_frame,
+            text="Search",
+            font=("Arial Bold", 12),
             fg_color="green",
             hover_color="darkgreen",
-            corner_radius=20,
-            width=200,
-            height=40,
-            command=self.on_back
+            corner_radius=10,
+            width=100,
+            height=35,
+            command=self.search_ingredient
         )
-        self.bottom_back_button.pack(pady=20)
+        self.search_button.pack(side="left")
+
+        # Response label
+        self.response_container = ctk.CTkFrame(
+            self.search_frame,
+            fg_color="white",
+            corner_radius=15,
+            height=120
+        )
+        self.response_container.pack(fill="x", padx=20, pady=(10, 0))
+
+        # Inner response frame with subtle shadow effect
+        self.response_frame = ctk.CTkFrame(
+            self.response_container,
+            fg_color="#f8f8f8",
+            corner_radius=12,
+            border_width=1,
+            border_color="#e0e0e0"
+        )
+        self.response_frame.pack(fill="x", padx=5, pady=5, ipady=10)
+
+        # Response header
+        self.response_header = ctk.CTkLabel(
+            self.response_frame,
+            text="Search Results",
+            font=("Arial Bold", 13),
+            text_color="green",
+            anchor="w"
+        )
+        self.response_header.pack(padx=15, pady=(10, 5), anchor="w")
+
+        # Response content
+        self.response_label = ctk.CTkLabel(
+            self.response_frame,
+            text="Enter an ingredient above to search...",
+            font=("Arial", 12),
+            text_color="#555555",
+            wraplength=600,
+            justify="left",
+            anchor="w"
+        )
+        self.response_label.pack(padx=15, pady=(0, 10), fill="x")
+
+        self.explainer = processor.IngredientExplainer('backend/user_profile.json')
+
+    
+    def search_ingredient(self):
+        query = self.search_input.get().strip()
+        if query:
+            # Here you would typically make an API call or database query
+            # For now, we'll just show a placeholder response
+
+            response = self.explainer.get_response(query)
+            self.response_label.configure(text=response)
+        else:
+            self.response_label.configure(text="Please enter an ingredient to search")
+
 
     def load_ingredients(self):
         try:

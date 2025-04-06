@@ -585,6 +585,7 @@ class MainWindow(customtkinter.CTk):
         for key, value in  nutrition_info.items():
             self.description_label.insert("end", f"{key}: {value}\n", "bold")
         self.description_label.insert("end", "\n")
+        self.description_label.configure(state="disabled")
 
 
 
