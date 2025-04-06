@@ -1,7 +1,7 @@
 import customtkinter
 import json
 
-USER_PROFILE_FILE = "user_profile.json"
+USER_PROFILE_FILE = "./backend/user_profile.json"
 
 class SettingsWindow(customtkinter.CTk):
     def __init__(self):
