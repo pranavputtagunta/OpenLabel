@@ -1,0 +1,17 @@
+{
+    "is_appropriate": "Yes",
+    "rating": 10,
+    "category": "Food",
+    "product_name": "Product Name",
+    "image_url": "https://example.com/image.jpg",
+    "description": "This is a sample product description that provides details about the product, its features, and benefits. It is designed to give potential customers a clear understanding of what they can expect from this product.",
+    "feedback": "This product contains lots of sugar, you are fat",
+    "nutrition_info": {
+        "calories": 250,
+        "fat": 10,
+        "carbohydrates": 30,
+        "protein": 5,
+        "sugar": 15
+    },
+    "alternatives": ["product A", "product B", "product C"]
+}
