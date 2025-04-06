@@ -16,11 +16,9 @@ Please output only a JSON with the following fields and no other response. Don't
 - "is_appropriate": A yes, no, or maybe indicating whether the product is appropriate for the user based on their preferences.
 - "rating": An integer rating from 1 to 10, where 1 is not recommended at all and 10 is recommended. 1-4 is not appropriate, 5-7 is somewhat appropriate, and 8-10 is very appropriate.
 - "category": The category of the product (e.g., food, beverage, supplement).
-- "product_name": The name of the product in the image.
+- "product_name": The name of the product in the image. Respond with "error" if no object is detected in the image.
 - "image_url": The URL of the product image from the web.
-- "center_coordinates" : The center coordinates of the product in the image as a proportion of the height and width with top left as (0, 0).
-    "x": double representing the x-coordinate of the center of the product in the image rounded to 3 decimal places.
-    "y": double representing the y-coordinate of the center of the product in the image rounded to 3 decimal places.
+- "bounding_box": The coordinates of the bounding box around the product in the image. This should be in [ymin, xmin, ymax, xmax] normalized from 0-1000 for every coordinate with the top left as the origin.
 - "feedback": string providing details on why the image is or isn't appropriate
 - "nutrition_info":
     "calories": string providing the calorie content of the product,
@@ -41,9 +39,11 @@ Please output only a JSON with the following fields and no other response. Don't
   "category": "string",
   "product_name": "string",
   "image_url": "string",
-  "center_coordinates": {
-    "x": float,
-    "y": float,
+  "bounding_box": {
+    "ymin": int,
+    "xmin": int,
+    "ymax": int,
+    "xmax": int
   },
   "feedback": "string",
   "nutrition_info": {
