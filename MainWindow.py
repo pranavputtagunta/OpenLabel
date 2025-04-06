@@ -154,6 +154,7 @@ class MainWindow(customtkinter.CTk):
 
         #self.grab_set()
         self.title("OpenLabel")
+        self.data = self.parse_json(RESPONSE_JSON_PATH)
 
         self._set_appearance_mode("light")
         self.configure(bg="#eeeeee",
@@ -243,7 +244,7 @@ class MainWindow(customtkinter.CTk):
         # This button will be placed at the bottom of the screen
         self.toggle_button = customtkinter.CTkButton(
             self,
-            text="See Analysis",
+            text="Analyze",
             command=self.toggle_description,
             corner_radius=20,
             hover_color=("green","darkgreen"),  # Change hover color to green
@@ -286,9 +287,38 @@ class MainWindow(customtkinter.CTk):
             command=self.open_settings
         )
 
+        # ------------ Reset Button -----------------
+        self.reset_button = customtkinter.CTkButton(
+            self.webcam_frame,
+            text="R",
+            width=40,
+            height=40,
+            corner_radius=80,
+            fg_color="transparent",
+            bg_color="#000001",
+            text_color="green",
+            hover_color=("gray75","green"),
+            border_width=2,
+            border_color="green",
+            command=self.reset_analysis
+        )
+        self.reset_button.place(relx=0.9, rely=0.2, anchor="ne")
+        pywinstyles.set_opacity(self.reset_button, color="#000001")
+
         self.profile_button.place(relx=0.9, rely=0.1, anchor="ne")
         pywinstyles.set_opacity(self.profile_button, color="#000001")
 
+    # Add this method to the MainWindow class
+    def reset_analysis(self):
+        
+        
+        if self.description_visible:
+            self.toggle_description()  # Hide description if it's visible
+        
+        self.description_visible = False
+        self.analyzed = False
+        self.toggle_button.configure(text="Analyze")
+        self.pause_webcam = False  # Resume webcam
 
 
     def open_settings(self):
@@ -327,11 +357,14 @@ class MainWindow(customtkinter.CTk):
             self.toggle_button.configure(state="disabled")
             self.pause_webcam = True
             self.food_recommender.process_product_image_cv2(self.paused_frame)
-            self.food_recommender.create_response_json()
+            self.food_recommender.create_response_json(RESPONSE_JSON_PATH)
+            self.on_resize(type('Event', (), {'widget': self, 'width': self.winfo_width(), 'height': self.winfo_height()})())
             self.paused_frame = self.food_recommender.draw_bounding_boxes(self.paused_frame)
             self.analyzed = True
             self.toggle_button.configure(state="normal")
+            self.update_description()
             self.toggle_description()
+            
 
     def animate_slide(self, show=True):
         """
@@ -383,7 +416,7 @@ class MainWindow(customtkinter.CTk):
 
             # Create a new frame with updated width in the constructor
             frame_height = self.description_height + 200
-            new_description_frame = Frame(
+            self.new_description_frame = Frame(
                 self,
                 row_count=1,
                 col_count=1,
@@ -397,14 +430,14 @@ class MainWindow(customtkinter.CTk):
             )
 
             # Prevent the new frame from resizing based on contents
-            new_description_frame.grid_propagate(False)
-            new_description_frame.grid_columnconfigure(0, weight=0)
+            self.new_description_frame.grid_propagate(False)
+            self.new_description_frame.grid_columnconfigure(0, weight=0)
 
             # Move the description label to the new frame
             textbox_height = (frame_height / 2) + 100
             self.description_label.grid_forget()
             self.description_label = customtkinter.CTkTextbox(
-                new_description_frame,
+                self.new_description_frame,
                 wrap="word",
                 font=("Arial", 18),
                 fg_color="white",
@@ -421,89 +454,14 @@ class MainWindow(customtkinter.CTk):
                 sticky="n"
             )
 
-            data = self.parse_json(RESPONSE_JSON_PATH)
-
-            self.description_label.tag_add("colored_text", "1.0", "1.16")
-            self.description_label.tag_config("colored_text",background="#1d1e1e",foreground="red")
-            self.description_label.grid(row=0, column=0, padx=20, pady=(20,50), sticky="new")
-
-            # Clear the textbox and enable editing
-            self.description_label.configure(state="normal")
-            self.description_label.delete("1.0", "end")
-
-            # Define tags for formatting (only colors, as 'font' is forbidden)
-            self.description_label.tag_config("bold_big", foreground="black")
-            self.description_label.tag_config("bold_bigger", foreground="black")
-            self.description_label.tag_config("bold", foreground="black")
-            self.description_label.tag_config("italic_small", foreground="gray")
-            self.description_label.tag_config("rating_red", foreground="red")
-            self.description_label.tag_config("rating_yellow", foreground="yellow")
-            self.description_label.tag_config("rating_lightgreen", foreground="light green")
-            self.description_label.tag_config("rating_darkgreen", foreground="dark green")
-
-            # [product_name]
-            self.description_label.insert("end", "Product Name: ", "bold_big")
-            self.description_label.insert("end", data.get("product_name", "Unknown Product") + "\n", "bold_bigger")
-
-            # [category]
-            self.description_label.insert("end", "Category: ", "bold_bigger")
-            self.description_label.insert("end", data.get("category", "Unknown Category") + "\n\n", "italic_small")
-
-            # divider line
-            self.description_label.insert("end", "-"*50 + "\n\n", "bold")
-
-            # Recommended: [is_appropriate]
-            self.description_label.insert("end", "Recommended: ", "bold_big")
-            is_app = data.get("is_appropriate", "N/A")
-            if is_app.lower() == "yes":
-                tag_app = "rating_darkgreen"
-            elif is_app.lower() == "maybe":
-                tag_app = "rating_yellow"
-            elif is_app.lower() == "no":
-                tag_app = "rating_red"
-            else:
-                tag_app = "bold"
-            self.description_label.insert("end", is_app + "\n", tag_app)
-
-            # [rating] (color coded)
-            rating = data.get("rating", 0)
-            if 1 <= rating <= 4:
-                rating_tag = "rating_red"
-            elif 5 <= rating <= 6:
-                rating_tag = "rating_yellow"
-            elif 7 <= rating <= 8:
-                rating_tag = "rating_lightgreen"
-            elif 9 <= rating <= 10:
-                rating_tag = "rating_darkgreen"
-            else:
-                rating_tag = "bold"
-
-            self.description_label.insert("end","Rating: ", "bold_big")
-            self.description_label.insert("end", str(rating) + "\n\n", rating_tag)
-
-            # divider line
-            self.description_label.insert("end", "-"*50 + "\n\n", "bold")
-
-            # [feedback]
-            self.description_label.insert("end", "Feedback: ", "bold_big")
-            self.description_label.insert("end", data.get("feedback", "No feedback provided.") + "\n\n", "bold")
-
-            # divider line
-            self.description_label.insert("end", "-"*50 + "\n\n", "bold")
-
-            # [nutrition_info] (each line separately)
-            nutrition_info = data.get("nutrition_info", {})
-            print(nutrition_info)
-            for key, value in  nutrition_info.items():
-                self.description_label.insert("end", f"{key}: {value}\n", "bold")
-            self.description_label.insert("end", "\n")
+            self.update_description()
 
             # Make the textbox read-only again
             self.description_label.configure(state="disabled")
 
             # Destroy old description frame and update reference
             self.description_frame.destroy()
-            self.description_frame = new_description_frame
+            self.description_frame = self.new_description_frame
 
             # Recalculate x-coordinate to center the description frame
             x_coord = 70
@@ -548,6 +506,89 @@ class MainWindow(customtkinter.CTk):
             pywinstyles.set_opacity(self.ingredients_button, color="#000001")
             # Update toggle button position to stay at bottom
             self.toggle_button.place_configure(rely=0.95)
+
+
+    def update_description(self):
+        data = self.parse_json(RESPONSE_JSON_PATH)
+
+        self.description_label.tag_add("colored_text", "1.0", "1.16")
+        self.description_label.tag_config("colored_text",background="#1d1e1e",foreground="red")
+        self.description_label.grid(row=0, column=0, padx=20, pady=(20,50), sticky="new")
+
+        # Clear the textbox and enable editing
+        self.description_label.configure(state="normal")
+        self.description_label.delete("1.0", "end")
+
+        # Define tags for formatting (only colors, as 'font' is forbidden)
+        self.description_label.tag_config("bold_big", foreground="black")
+        self.description_label.tag_config("bold_bigger", foreground="black")
+        self.description_label.tag_config("bold", foreground="black")
+        self.description_label.tag_config("italic_small", foreground="gray")
+        self.description_label.tag_config("rating_red", foreground="red")
+        self.description_label.tag_config("rating_yellow", foreground="yellow")
+        self.description_label.tag_config("rating_lightgreen", foreground="light green")
+        self.description_label.tag_config("rating_darkgreen", foreground="dark green")
+
+        # [product_name]
+        self.description_label.insert("end", "Product Name: ", "bold_big")
+        self.description_label.insert("end", data.get("product_name", "Unknown Product") + "\n", "bold_bigger")
+
+        # [category]
+        self.description_label.insert("end", "Category: ", "bold_bigger")
+        self.description_label.insert("end", data.get("category", "Unknown Category") + "\n\n", "italic_small")
+
+        # divider line
+        self.description_label.insert("end", "-"*50 + "\n\n", "bold")
+
+        # Recommended: [is_appropriate]
+        self.description_label.insert("end", "Recommended: ", "bold_big")
+        is_app = data.get("is_appropriate", "N/A")
+        if is_app.lower() == "yes":
+            tag_app = "rating_darkgreen"
+        elif is_app.lower() == "maybe":
+            tag_app = "rating_yellow"
+        elif is_app.lower() == "no":
+            tag_app = "rating_red"
+        else:
+            tag_app = "bold"
+        self.description_label.insert("end", is_app + "\n", tag_app)
+
+        # [rating] (color coded)
+        rating = data.get("rating", 0)
+        if 1 <= rating <= 4:
+            rating_tag = "rating_red"
+        elif 5 <= rating <= 6:
+            rating_tag = "rating_yellow"
+        elif 7 <= rating <= 8:
+            rating_tag = "rating_lightgreen"
+        elif 9 <= rating <= 10:
+            rating_tag = "rating_darkgreen"
+        else:
+            rating_tag = "bold"
+
+        self.description_label.insert("end","Rating: ", "bold_big")
+        self.description_label.insert("end", str(rating) + "\n\n", rating_tag)
+
+        # divider line
+        self.description_label.insert("end", "-"*50 + "\n\n", "bold")
+
+        # [feedback]
+        self.description_label.insert("end", "Feedback: ", "bold_big")
+        self.description_label.insert("end", data.get("feedback", "No feedback provided.") + "\n\n", "bold")
+
+        # divider line
+        self.description_label.insert("end", "-"*50 + "\n\n", "bold")
+
+        # [nutrition_info] (each line separately)
+        nutrition_info = data.get("nutrition_info", {})
+        print(nutrition_info)
+        for key, value in  nutrition_info.items():
+            self.description_label.insert("end", f"{key}: {value}\n", "bold")
+        self.description_label.insert("end", "\n")
+
+
+
+
 
     def show_alternatives(self):
         self.show_alternatives_requested = True
@@ -663,19 +704,35 @@ def mainTest():
     app.mainloop()
 
     while True:
-        if current_window in ["welcome", "settings", "alternatives", "ingredients"]:
+        if current_window in ["welcome", "settings"]:
             main_app = MainWindow()
             main_app.after(0, lambda:main_app.grab_set())
             main_app.after(0, lambda: fade_window(main_app, 0.0, 1.0))  # Fade in the main window
             current_window = "main"
             main_app.mainloop()
 
+        if current_window in ["alternatives", "ingredients"]:
+            main_app = MainWindow()
+            main_app.analyzed = True
+            
+            main_app.animate_slide(show=True)
+            main_app.toggle_button.configure(text="Hide Description")
+            pywinstyles.set_opacity(main_app.toggle_button, color="#000001")
+            main_app.description_visible = True
+
+            main_app.after(0, lambda:main_app.grab_set())
+            main_app.after(0, lambda: fade_window(main_app, 0.0, 1.0))  # Fade in the main window
+            current_window = "main"
+            main_app.mainloop()
+        
+        
         if hasattr(main_app, 'show_alternatives_requested') and main_app.show_alternatives_requested:
             alternatives = AlternativesWindow()
             alternatives.after(0, lambda: alternatives.grab_set())
             alternatives.after(0, lambda: fade_window(alternatives, 0.0, 1.0))
             current_window = "alternatives"
             main_app.show_alternatives_requested = False
+            main_app.analyzed = True
             alternatives.mainloop()
         elif hasattr(main_app, 'show_ingredients_requested') and main_app.show_ingredients_requested:
             ingredients = IngredientsWindow()
@@ -683,12 +740,14 @@ def mainTest():
             ingredients.after(0, lambda: fade_window(ingredients, 0.0, 1.0))
             current_window = "ingredients"
             main_app.show_ingredients_requested = False
+            main_app.analyzed = True
             ingredients.mainloop()
         elif current_window == "main":
             settings = SettingsWindow()
             settings.after(0, lambda:settings.grab_set())
             settings.after(0, lambda: fade_window(settings, 0.0, 1.0))
             current_window = "settings"
+            main_app.analyzed = True
             settings.mainloop()
         
 

@@ -1,59 +1,97 @@
 {
-    "is_appropriate": "maybe",
-    "rating": 6,
+    "is_appropriate": "No",
+    "rating": 3,
     "category": "food",
-    "product_name": "Salad Bowl",
-    "image_url": "https://i.imgur.com/example.jpg",
+    "product_name": "Goldfish Flavor Blasted Xtra Cheddar",
+    "image_url": "https://i.imgur.com/Ww11QYF.jpg",
     "bounding_box": {
-        "ymin": 10,
-        "xmin": 10,
-        "ymax": 500,
-        "xmax": 500
+        "ymin": 149,
+        "xmin": 467,
+        "ymax": 854,
+        "xmax": 703
     },
-    "feedback": "The salad bowl appears to be a good source of vegetables, which aligns with your goal to eat more vegetables. However, the appropriateness depends on the specific ingredients. It's important to ensure the salad is gluten-free and does not contain pecans or peanuts. Also, be mindful of added sugars in dressings or other components to meet your goal of reducing sugar intake. The salad bowl can be a healthy option if you customize it to fit your dietary needs and preferences.",
+    "feedback": "Goldfish Flavor Blasted Xtra Cheddar are not ideal for weight reduction due to their high carbohydrate content and processed nature. They offer minimal nutritional value and can contribute to weight gain if consumed regularly.",
     "nutrition_info": {
-        "calories": "Varies",
-        "protein": "Varies",
-        "carbohydrates": "Varies",
-        "fat": "Varies",
-        "sugar": "Varies",
-        "fiber": "Varies"
+        "calories": "140",
+        "protein": "5g",
+        "carbohydrates": "20g",
+        "fat": "5g",
+        "sugar": "1g",
+        "fiber": "1g"
     },
-    "price": "Varies",
+    "price": "$2.99",
     "alternative_products": [
         {
-            "product_name": "Custom Salad with Gluten-Free Dressing",
-            "image_url": "https://i.imgur.com/example_salad.jpg"
+            "product_name": "SkinnyPop Original Popcorn",
+            "image_url": "https://m.media-amazon.com/images/I/91z9UDyX+ZL._SL1500_.jpg",
+            "product_link": "https://www.amazon.com/s?k=SkinnyPop+Original+Popcorn"
+        },
+        {
+            "product_name": "Quest Nutrition Cheddar Blast Protein Chips",
+            "image_url": "https://m.media-amazon.com/images/I/813d9n5v92L._SL1500_.jpg",
+            "product_link": "https://www.amazon.com/s?k=Quest+Nutrition+Cheddar+Blast+Protein+Chips"
         }
     ],
     "ingredients": [
         {
-            "ingredient_name": "Lettuce",
-            "description": "A leafy green vegetable that is low in calories and high in vitamins and minerals."
+            "ingredient_name": "Enriched Wheat Flour",
+            "description": "Provides carbohydrates but can be heavily processed and lack nutrients."
         },
         {
-            "ingredient_name": "Tomatoes",
-            "description": "A fruit that is a good source of vitamins, minerals, and antioxidants."
+            "ingredient_name": "Vegetable Oils (Canola, Sunflower and/or Soybean)",
+            "description": "Source of fat, but the health impact depends on the specific oil; some may be high in omega-6 fatty acids."
         },
         {
-            "ingredient_name": "Cucumbers",
-            "description": "A vegetable that is low in calories and high in water content."
+            "ingredient_name": "Cheddar Cheese",
+            "description": "Adds flavor and some protein, but also contributes to fat and sodium content."
         },
         {
-            "ingredient_name": "Avocado",
-            "description": "A fruit that is high in healthy fats and fiber."
+            "ingredient_name": "Salt",
+            "description": "Enhances flavor but can contribute to high sodium intake."
         },
         {
-            "ingredient_name": "Black Beans",
-            "description": "A legume that is a good source of protein and fiber."
+            "ingredient_name": "Yeast Extract",
+            "description": "Used as a flavor enhancer."
         },
         {
-            "ingredient_name": "Corn",
-            "description": "A grain that is a good source of carbohydrates and fiber."
+            "ingredient_name": "Paprika Extract",
+            "description": "Used for color."
         },
         {
-            "ingredient_name": "Dressing",
-            "description": "A sauce that is used to flavor salads. Be mindful of added sugars and unhealthy fats."
+            "ingredient_name": "Spices",
+            "description": "Adds flavor."
+        },
+        {
+            "ingredient_name": "Dehydrated Onions",
+            "description": "Adds flavor."
+        },
+        {
+            "ingredient_name": "Autolyzed Yeast Extract",
+            "description": "Flavor enhancer."
+        },
+        {
+            "ingredient_name": "Sugar",
+            "description": "Adds sweetness and calories."
+        },
+        {
+            "ingredient_name": "Monosodium Glutamate",
+            "description": "Flavor enhancer."
+        },
+        {
+            "ingredient_name": "Disodium Inosinate",
+            "description": "Flavor enhancer."
+        },
+        {
+            "ingredient_name": "Disodium Guanylate",
+            "description": "Flavor enhancer."
+        },
+        {
+            "ingredient_name": "Baking Soda",
+            "description": "Leavening agent."
+        },
+        {
+            "ingredient_name": "Annatto Extracts",
+            "description": "Used for color."
         }
     ]
 }

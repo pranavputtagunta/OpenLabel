@@ -52,9 +52,9 @@ class AlternativesWindow(ctk.CTk):
             command=self.on_back
         )
         self.bottom_back_button.pack(pady=(0, 20))
-        
+
         # Store product data
-        self.product_data = self.parse_json("gemini_test.json")
+        self.product_data = self.parse_json("./backend/response.json")
         
         # Create product cards
         self.create_product_cards()
@@ -92,7 +92,7 @@ class AlternativesWindow(ctk.CTk):
         card_frame.pack(pady=10, padx=20, fill="x")
         card_frame.pack_propagate(False)
 
-        product = self.parse_json("gemini_test.json")["alternative_products"][row] 
+        product = self.parse_json("./backend/response.json")["alternative_products"][row] 
         print(product)
         try:
             # Load and resize product image from URL
@@ -152,7 +152,7 @@ class AlternativesWindow(ctk.CTk):
             corner_radius=20,
             width=120,
             height=32,
-            command=lambda url=product.get("image_url"): self.open_url(url)
+            command=lambda url=product.get("product_link"): self.open_url(url)
         )
         view_button.pack(anchor="w", pady=(10, 0))
     

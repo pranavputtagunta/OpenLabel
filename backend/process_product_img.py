@@ -8,7 +8,7 @@ import cv2
 
 # Set your API key here
 
-genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+genai.configure(api_key="KEY_GOES_HERE")
 
 default_system_insructions = """
 You are a helpful assistant that determines whether a product image is appropriate for a specific user based on their preferences.
@@ -30,13 +30,13 @@ Please output only a JSON with the following fields and no other response. Don't
     "sugar": string providing the sugar content of the product,
     "fiber": string providing the fiber content of the product,
 - "price": string providing the price of the product in the image
-- "alternative_products": list of similar products that are more appropriate for the user if the product is not appropriate. Make the alternatives either diet versions of it or snacks that are very similar but healthier. None if it is appropriate.
+- "alternative_products": list of similar products that are more appropriate for the user if the product is not appropriate. Make the alternatives either diet versions of it or snacks that are very similar but healthier. None if it is appropriate. Also include a url to buy the item (in the exact format of amazon.com/s?k=[alternative_name]).
 - "ingredients": list of ingredients in the product.
     "ingredient_name": string providing the name of the ingredient,
     "description": string providing a description of the ingredient and health impacts,
 
 {
-  "is_appropriate": "yes" or "no" or "maybe",
+  "is_appropriate": "Yes" or "No" or "maybe",
   "rating": int,
   "category": "string",
   "product_name": "string",
@@ -60,7 +60,8 @@ Please output only a JSON with the following fields and no other response. Don't
   "alternative_products": [
     {
       "product_name": string,
-      "image_url": string
+      "image_url": string,
+      "product_link": string
     }
   ] or None,
   "ingredients": [

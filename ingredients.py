@@ -65,7 +65,7 @@ class IngredientsWindow(ctk.CTk):
 
     def load_ingredients(self):
         try:
-            with open("gemini_test.json", "r") as f:
+            with open("./backend/response.json", "r") as f:
                 data = json.load(f)
                 ingredients = data.get("ingredients", [])
                 self.create_ingredient_dropdowns(ingredients)
