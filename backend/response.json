@@ -1,0 +1,59 @@
+{
+    "is_appropriate": "maybe",
+    "rating": 6,
+    "category": "food",
+    "product_name": "Salad Bowl",
+    "image_url": "https://i.imgur.com/example.jpg",
+    "bounding_box": {
+        "ymin": 10,
+        "xmin": 10,
+        "ymax": 500,
+        "xmax": 500
+    },
+    "feedback": "The salad bowl appears to be a good source of vegetables, which aligns with your goal to eat more vegetables. However, the appropriateness depends on the specific ingredients. It's important to ensure the salad is gluten-free and does not contain pecans or peanuts. Also, be mindful of added sugars in dressings or other components to meet your goal of reducing sugar intake. The salad bowl can be a healthy option if you customize it to fit your dietary needs and preferences.",
+    "nutrition_info": {
+        "calories": "Varies",
+        "protein": "Varies",
+        "carbohydrates": "Varies",
+        "fat": "Varies",
+        "sugar": "Varies",
+        "fiber": "Varies"
+    },
+    "price": "Varies",
+    "alternative_products": [
+        {
+            "product_name": "Custom Salad with Gluten-Free Dressing",
+            "image_url": "https://i.imgur.com/example_salad.jpg"
+        }
+    ],
+    "ingredients": [
+        {
+            "ingredient_name": "Lettuce",
+            "description": "A leafy green vegetable that is low in calories and high in vitamins and minerals."
+        },
+        {
+            "ingredient_name": "Tomatoes",
+            "description": "A fruit that is a good source of vitamins, minerals, and antioxidants."
+        },
+        {
+            "ingredient_name": "Cucumbers",
+            "description": "A vegetable that is low in calories and high in water content."
+        },
+        {
+            "ingredient_name": "Avocado",
+            "description": "A fruit that is high in healthy fats and fiber."
+        },
+        {
+            "ingredient_name": "Black Beans",
+            "description": "A legume that is a good source of protein and fiber."
+        },
+        {
+            "ingredient_name": "Corn",
+            "description": "A grain that is a good source of carbohydrates and fiber."
+        },
+        {
+            "ingredient_name": "Dressing",
+            "description": "A sauce that is used to flavor salads. Be mindful of added sugars and unhealthy fats."
+        }
+    ]
+}

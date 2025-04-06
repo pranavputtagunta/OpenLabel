@@ -9,12 +9,15 @@ import os
 
 from welcome import OpenLabelApp
 from loading import LoadingScreen
+
 from alternatives import AlternativesWindow
 from ingredients import IngredientsWindow
+import backend.process_product_img as processor
 
 import time
 # Define the path to your JSON file for user profile
-
+USER_PROFILE_FILE = "backend/user_profile.json"
+RESPONSE_JSON_PATH = "backend/response.json"
 
 def open_popup(self):
     # Create the popup window (a CTkToplevel instance)
@@ -160,6 +163,12 @@ class MainWindow(customtkinter.CTk):
         # Configure main window grid
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
+        
+        # Image Processing State Variables
+        self.analyzed = False
+        self.frame = None
+        self.pause_webcam = False
+        self.food_recommender = processor.FoodRecommender(USER_PROFILE_FILE)
 
 # WEBCAMMMMMMMMMMMMMMMMMMMMM
         # This frame uses grid layout and fills the entire window.
@@ -302,15 +311,27 @@ class MainWindow(customtkinter.CTk):
     #TODO: Pranav handle integration
     def toggle_description(self):
         """Toggle the description panel"""
-        if self.description_visible:
-            self.animate_slide(show=False)
-            self.toggle_button.configure(text="Show Description")
-            pywinstyles.set_opacity(self.toggle_button, color="#000001")
-        else:
-            self.animate_slide(show=True)
-            self.toggle_button.configure(text="Hide Description")
-            pywinstyles.set_opacity(self.toggle_button, color="#000001")
-        self.description_visible = not self.description_visible
+        if self.analyzed: 
+            if self.description_visible:
+                self.animate_slide(show=False)
+                self.toggle_button.configure(text="Show Description")
+                pywinstyles.set_opacity(self.toggle_button, color="#000001")
+            else:
+                self.animate_slide(show=True)
+                self.toggle_button.configure(text="Hide Description")
+                pywinstyles.set_opacity(self.toggle_button, color="#000001")
+            self.description_visible = not self.description_visible
+        elif self.frame != None:
+            # If the image hasn't been analyzed yet, process it
+            self.toggle_button.configure(text="Analyzing image...")
+            self.toggle_button.configure(state="disabled")
+            self.pause_webcam = True
+            self.food_recommender.process_product_image_cv2(self.frame)
+            self.food_recommender.create_response_json()
+            self.frame = self.food_recommender.draw_bounding_boxes(self.frame)
+            self.analyzed = True
+            self.toggle_button.configure(state="normal")
+            self.toggle_description()
 
     def animate_slide(self, show=True):
         """
@@ -400,7 +421,7 @@ class MainWindow(customtkinter.CTk):
                 sticky="n"
             )
 
-            data = self.parse_json("gemini_test.json")
+            data = self.parse_json(RESPONSE_JSON_PATH)
 
             self.description_label.tag_add("colored_text", "1.0", "1.16")
             self.description_label.tag_config("colored_text",background="#1d1e1e",foreground="red")
@@ -567,6 +588,10 @@ class MainWindow(customtkinter.CTk):
         ret, frame = self.cap.read()
 
         if ret:
+            if self.frame != None and self.pause_webcam:
+                frame = self.frame
+            else:
+                self.frame = frame
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
             # Get target dimensions (subtracting margins as needed)
